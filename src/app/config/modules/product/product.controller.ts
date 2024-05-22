@@ -7,10 +7,13 @@ const createProduct = async (req: Request, res: Response) => {
 };
 
 const getAllProducts = async (req: Request, res: Response) => {
-  if (req.params) {
-    console.log('got a specific product');
+  // console.log(req.params);
+  const { productId } = req.params;
+
+  if (productId) {
+    console.log('got a specific product', productId);
   } else {
-    console.log('all product got');
+    console.log('got all product');
   }
 };
 
