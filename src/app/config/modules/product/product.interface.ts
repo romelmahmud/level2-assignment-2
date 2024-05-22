@@ -1,11 +1,11 @@
 // product interface
 
-interface TVariant {
+export interface TVariant {
   type: string;
   value: string;
 }
 
-interface TInventory {
+export interface TInventory {
   quantity: number;
   inStock: boolean;
 }
