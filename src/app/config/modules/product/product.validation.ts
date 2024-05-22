@@ -22,7 +22,7 @@ const productValidationSchema = z.object({
   price: z.number().positive({ message: 'Product price must be positive' }),
   category: z.string().min(1, { message: 'Product category is required' }),
   tags: z.array(z.string().min(1, { message: 'Product tags are required' })),
-  variant: variantValidationSchema,
+  variants: z.array(variantValidationSchema),
   inventory: inventoryValidationSchema,
 });
 

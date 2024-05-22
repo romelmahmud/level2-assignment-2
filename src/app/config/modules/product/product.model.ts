@@ -1,7 +1,12 @@
 // product model
 
 import { Schema, model } from 'mongoose';
-import { TInventory, TProduct, TVariant } from './product.interface';
+import {
+  ProductModel,
+  TInventory,
+  TProduct,
+  TVariant,
+} from './product.interface';
 
 const variantSchema = new Schema<TVariant>({
   type: {
@@ -27,11 +32,12 @@ const inventorySchema = new Schema<TInventory>({
 });
 
 // Define the Product Schema
-const productSchema = new Schema<TProduct>({
+const productSchema = new Schema<TProduct, ProductModel>({
   name: {
     type: String,
     required: [true, 'Product name is required'],
     trim: true,
+    unique: true,
   },
   description: {
     type: String,
@@ -52,14 +58,23 @@ const productSchema = new Schema<TProduct>({
       required: [true, 'Product tags are required'],
     },
   ],
-  variant: {
-    type: variantSchema,
-    required: [true, 'Product variant information is required'],
-  },
+  variants: [
+    {
+      type: variantSchema,
+      required: [true, 'Product variant information is required'],
+    },
+  ],
   inventory: {
     type: inventorySchema,
     required: [true, 'Product inventory information is required'],
   },
 });
 
-export const Product = model('Product', productSchema);
+// creating a custom static method checking if product exists
+
+productSchema.statics.isProductExists = async function (name: string) {
+  const existingProduct = await Product.findOne({ name });
+  return existingProduct;
+};
+
+export const Product = model<TProduct, ProductModel>('Product', productSchema);

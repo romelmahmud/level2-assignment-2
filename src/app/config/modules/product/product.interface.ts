@@ -1,5 +1,7 @@
 // product interface
 
+import { Model } from 'mongoose';
+
 export interface TVariant {
   type: string;
   value: string;
@@ -14,7 +16,11 @@ export interface TProduct {
   description: string;
   price: number;
   category: string;
-  tags: [string];
-  variant: TVariant;
+  tags: string[];
+  variants: TVariant[];
   inventory: TInventory;
+}
+
+export interface ProductModel extends Model<TProduct> {
+  isProductExists(name: string): Promise<TProduct | null>;
 }
