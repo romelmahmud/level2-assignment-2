@@ -16,11 +16,11 @@ const createProduct = async (req: Request, res: Response) => {
       message: 'Product created successfully!',
       data: result,
     });
-  } catch (err: any) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
-      message: err.message || 'something went wrong',
-      error: err,
+      message: error.message || 'something went wrong',
+      error,
     });
   }
 };
@@ -34,11 +34,11 @@ const getAllProducts = async (req: Request, res: Response) => {
         await ProductServices.getAllProductsFromDB(searchTerm);
 
       // if searchTerm not found in db
+
       if (Array.isArray(searchResult)) {
         res.status(404).json({
           success: false,
           message: `Products matching search term '${searchTerm}' not found`,
-          data: searchResult,
         });
       }
       res.status(200).json({
@@ -50,22 +50,43 @@ const getAllProducts = async (req: Request, res: Response) => {
       const result = await ProductServices.getAllProductsFromDB();
       res.status(200).json({
         success: true,
-        message: 'Product fetched successfully!',
+        message: 'Products fetched successfully!',
         data: result,
       });
     }
-  } catch (err: any) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
-      message: err.message || 'something went wrong',
-      error: err,
+      message: error.message || 'something went wrong',
+      error,
     });
   }
 };
 
 const getSingleProduct = async (req: Request, res: Response) => {
-  const { productId } = req.params;
-  console.log('Got a single product', productId);
+  try {
+    const { productId } = req.params;
+    const product = await ProductServices.getSingleProductFromDB(productId);
+    //if product not found
+    if (!product) {
+      res.status(404).json({
+        success: false,
+        message: 'Product not found',
+      });
+    }
+    // if product found
+    res.status(200).json({
+      success: true,
+      message: 'Product fetched successfully!',
+      data: product,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || 'something went wrong',
+      error,
+    });
+  }
 };
 
 const updateProduct = async (req: Request, res: Response) => {
@@ -76,20 +97,10 @@ const deleteProduct = async (req: Request, res: Response) => {
   console.log('product deleted');
 };
 
-const searchProduct = async (req: Request, res: Response) => {
-  const { searchTerm } = req.query;
-  if (searchTerm) {
-    console.log('product searching', searchTerm);
-  } else {
-    console.log('got all product');
-  }
-};
-
 export const ProductControllers = {
   createProduct,
   getAllProducts,
   updateProduct,
   deleteProduct,
-  searchProduct,
   getSingleProduct,
 };
