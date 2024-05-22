@@ -11,6 +11,4 @@ router.put('/', ProductControllers.updateProduct);
 
 router.delete('/:productId', ProductControllers.deleteProduct);
 
-// router.get('?searchTerm=iphone', ProductControllers.searchProduct);
-
 export const ProductRoutes = router;

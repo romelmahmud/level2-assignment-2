@@ -9,9 +9,12 @@ const createProduct = async (req: Request, res: Response) => {
 const getAllProducts = async (req: Request, res: Response) => {
   // console.log(req.params);
   const { productId } = req.params;
+  const { searchTerm } = req.query;
 
   if (productId) {
     console.log('got a specific product', productId);
+  } else if (searchTerm) {
+    console.log('product searching', searchTerm);
   } else {
     console.log('got all product');
   }
@@ -26,7 +29,12 @@ const deleteProduct = async (req: Request, res: Response) => {
 };
 
 const searchProduct = async (req: Request, res: Response) => {
-  console.log('product searching');
+  const { searchTerm } = req.query;
+  if (searchTerm) {
+    console.log('product searching', searchTerm);
+  } else {
+    console.log('got all product');
+  }
 };
 
 export const ProductControllers = {
