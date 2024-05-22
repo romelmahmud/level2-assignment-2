@@ -9,7 +9,7 @@ router.get('/', ProductControllers.getAllProducts);
 
 router.get('/:productId', ProductControllers.getSingleProduct);
 
-router.put('/', ProductControllers.updateProduct);
+router.put('/:productId', ProductControllers.updateProduct);
 
 router.delete('/:productId', ProductControllers.deleteProduct);
 

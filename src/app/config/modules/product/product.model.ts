@@ -70,7 +70,7 @@ const productSchema = new Schema<TProduct, ProductModel>({
   },
 });
 
-// creating a custom static method checking if product exists
+// creating a custom static method checking if product exists with product name
 
 productSchema.statics.isProductExists = async function (name: string) {
   const existingProduct = await Product.findOne({ name });

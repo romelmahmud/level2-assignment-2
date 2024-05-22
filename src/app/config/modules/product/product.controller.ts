@@ -73,13 +73,14 @@ const getSingleProduct = async (req: Request, res: Response) => {
         success: false,
         message: 'Product not found',
       });
+    } else {
+      // if product found
+      res.status(200).json({
+        success: true,
+        message: 'Product fetched successfully!',
+        data: product,
+      });
     }
-    // if product found
-    res.status(200).json({
-      success: true,
-      message: 'Product fetched successfully!',
-      data: product,
-    });
   } catch (error: any) {
     res.status(500).json({
       success: false,
@@ -90,7 +91,34 @@ const getSingleProduct = async (req: Request, res: Response) => {
 };
 
 const updateProduct = async (req: Request, res: Response) => {
-  console.log('product updated');
+  try {
+    const { productId } = req.params;
+    const updateDetails = req.body;
+
+    const updatedProduct = await ProductServices.updatedProductOnDB(
+      productId,
+      updateDetails,
+    );
+
+    if (updatedProduct === false) {
+      res.status(404).json({
+        success: false,
+        message: 'Product not found to update',
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: 'Product updated successfully!',
+        data: updatedProduct,
+      });
+    }
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || 'something went wrong',
+      error,
+    });
+  }
 };
 
 const deleteProduct = async (req: Request, res: Response) => {

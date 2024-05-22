@@ -8,19 +8,19 @@ const createProductIntoDB = async (productData: TProduct) => {
     throw new Error('Product already exists');
   }
 
-  const result = await Product.create(productData);
+  const products = await Product.create(productData);
 
-  return result;
+  return products;
 };
 
 const getAllProductsFromDB = async (searchTerm?: string | undefined) => {
-  const result = await Product.find();
+  const products = await Product.find();
   if (typeof searchTerm === 'undefined') {
-    return result;
+    return products;
   }
   if (searchTerm) {
     // Filter products based on the searchTerm in name, description, category or tags
-    const filteredProducts = result.filter(product => {
+    const filteredProducts = products.filter(product => {
       const lowerCaseSearchTerm = searchTerm.toLowerCase();
       return (
         product.name.toLowerCase().includes(lowerCaseSearchTerm) ||
@@ -40,8 +40,22 @@ const getSingleProductFromDB = async (productId: string) => {
   return product;
 };
 
+const updatedProductOnDB = async (productId: string, updateDetails: any) => {
+  const product = await Product.findOne({ _id: productId });
+  if (!product) {
+    return false;
+  }
+  const updatedProduct = await Product.findByIdAndUpdate(
+    productId,
+    updateDetails,
+    { new: true },
+  );
+  return updatedProduct;
+};
+
 export const ProductServices = {
   createProductIntoDB,
   getAllProductsFromDB,
   getSingleProductFromDB,
+  updatedProductOnDB,
 };
