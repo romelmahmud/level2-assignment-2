@@ -8,16 +8,19 @@ const createProduct = async (req: Request, res: Response) => {
 
 const getAllProducts = async (req: Request, res: Response) => {
   // console.log(req.params);
-  const { productId } = req.params;
+
   const { searchTerm } = req.query;
 
-  if (productId) {
-    console.log('got a specific product', productId);
-  } else if (searchTerm) {
+  if (searchTerm) {
     console.log('product searching', searchTerm);
   } else {
     console.log('got all product');
   }
+};
+
+const getSingleProduct = async (req: Request, res: Response) => {
+  const { productId } = req.params;
+  console.log('Got a single product', productId);
 };
 
 const updateProduct = async (req: Request, res: Response) => {
@@ -43,4 +46,5 @@ export const ProductControllers = {
   updateProduct,
   deleteProduct,
   searchProduct,
+  getSingleProduct,
 };
