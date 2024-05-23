@@ -21,6 +21,7 @@ const createOrder = async (req: Request, res: Response) => {
         data: result,
       });
     }
+    /* eslint-disable  @typescript-eslint/no-explicit-any */
   } catch (error: any) {
     res.status(500).json({
       success: false,
@@ -57,6 +58,7 @@ const getAllOrders = async (req: Request, res: Response) => {
         data: result,
       });
     }
+    /* eslint-disable  @typescript-eslint/no-explicit-any */
   } catch (error: any) {
     res.status(500).json({
       success: false,

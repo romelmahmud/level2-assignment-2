@@ -1,5 +1,6 @@
 // product service
 
+import { UpdateQuery } from 'mongoose';
 import { TProduct } from './product.interface';
 import { Product } from './product.model';
 
@@ -38,7 +39,10 @@ const getSingleProductFromDB = async (productId: string) => {
   return product;
 };
 
-const updatedProductOnDB = async (productId: string, updateDetails: any) => {
+const updatedProductOnDB = async (
+  productId: string,
+  updateDetails: UpdateQuery<TProduct> | undefined,
+) => {
   const product = await Product.findOne({ _id: productId });
   // checking product is exists
   if (!product) {
