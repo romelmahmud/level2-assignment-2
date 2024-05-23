@@ -19,18 +19,16 @@ const getAllProductsFromDB = async (searchTerm?: string | undefined) => {
     return products;
   }
   if (searchTerm) {
-    // Filter products based on the searchTerm in name, description, category or tags
-    const filteredProducts = products.filter(product => {
-      const lowerCaseSearchTerm = searchTerm.toLowerCase();
-      return (
-        product.name.toLowerCase().includes(lowerCaseSearchTerm) ||
-        product.description.toLowerCase().includes(lowerCaseSearchTerm) ||
-        product.category.toLowerCase().includes(lowerCaseSearchTerm) ||
-        product.tags.some(tag =>
-          tag.toLowerCase().includes(lowerCaseSearchTerm),
-        )
-      );
-    });
+    // Filter products based on the searchTerm in name, description, category or tags using ReGex
+    const regex = new RegExp(searchTerm, 'i'); // using 'i' flag makes search case insensitive
+
+    const filteredProducts = products.filter(
+      product =>
+        regex.test(product.name) || // Checking in name
+        regex.test(product.description) || // Checking in  description
+        product.tags.some(tag => regex.test(tag)) || // Checking in each tag
+        regex.test(product.category), // Checking in category
+    );
     return filteredProducts;
   }
 };
@@ -42,6 +40,7 @@ const getSingleProductFromDB = async (productId: string) => {
 
 const updatedProductOnDB = async (productId: string, updateDetails: any) => {
   const product = await Product.findOne({ _id: productId });
+  // checking product is exists
   if (!product) {
     return false;
   }
