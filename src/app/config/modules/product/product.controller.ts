@@ -35,7 +35,7 @@ const getAllProducts = async (req: Request, res: Response) => {
 
       // if searchTerm not found in db
 
-      if (Array.isArray(searchResult)) {
+      if (!Array.isArray(searchResult)) {
         res.status(404).json({
           success: false,
           message: `Products matching search term '${searchTerm}' not found`,
