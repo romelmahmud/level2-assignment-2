@@ -6,12 +6,21 @@ const createOrder = async (req: Request, res: Response) => {
     const orderData = req.body;
 
     const result = await OrderServices.createNewOrderIntoDB(orderData);
-
-    res.status(200).json({
-      success: true,
-      message: 'Order created successfully!',
-      data: result,
-    });
+    // if order not completed
+    if (!result) {
+      res.status(404).json({
+        success: false,
+        message: 'Insufficient quantity available in inventory',
+      });
+    }
+    // if order placed successfully
+    if (result) {
+      res.status(200).json({
+        success: true,
+        message: 'Order created successfully!',
+        data: result,
+      });
+    }
   } catch (error: any) {
     res.status(500).json({
       success: false,
