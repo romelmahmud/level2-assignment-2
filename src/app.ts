@@ -15,6 +15,13 @@ app.use('/api/products', ProductRoutes);
 // Order routes
 app.use('/api/orders', OrderRoutes);
 
+// home route
+app.get('/', (req: Request, res: Response) => {
+  res.status(200).json({
+    success: true,
+    message: 'Assalamo alaikom',
+  });
+});
 // Catching all route for handling not found routes
 
 app.use('*', (req: Request, res: Response) => {
