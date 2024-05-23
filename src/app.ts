@@ -15,8 +15,13 @@ app.use('/api/products', ProductRoutes);
 // Order routes
 app.use('/api/orders', OrderRoutes);
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World!');
+// Catching all route for handling not found routes
+
+app.use('*', (req: Request, res: Response) => {
+  res.status(404).json({
+    success: false,
+    message: 'Route not found',
+  });
 });
 
 export default app;
